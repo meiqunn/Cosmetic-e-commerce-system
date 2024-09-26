@@ -1,0 +1,57 @@
+ body {
+  margin: 0;
+  padding: 0;
+ }
+ 
+ #background 
+{ 
+	 left: 0px; 
+	 top: 0px; 
+	 position: relative; 
+	 margin-left: auto; 
+	 margin-right: auto; 
+	 width: 1000px;
+	 height: 1000px; 
+	 overflow: hidden;
+	 z-index:0;
+	} 
+
+ #lipstickhighlight 
+{ 
+	 left: 215px; 
+	 top: 189px; 
+	 position: absolute; 
+	 width: 653px;
+	 height: 383px;
+	 z-index:1;
+} 
+
+ #lipstickhighlightcop 
+{ 
+	 left: 203px; 
+	 top: 155px; 
+	 position: absolute; 
+	 width: 667px;
+	 height: 706px;
+	 z-index:2;
+} 
+
+ #dark 
+{ 
+	 left: 0px; 
+	 top: 0px; 
+	 position: absolute; 
+	 width: 1000px;
+	 height: 1000px;
+	 z-index:3;
+} 
+
+ #Layer1copy3 
+{ 
+	 left: 0px; 
+	 top: 0px; 
+	 position: absolute; 
+	 width: 1000px;
+	 height: 1000px;
+	 z-index:4;
+} 

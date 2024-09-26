@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<?php 
+
+include("dataconnection.php"); 
+session_start();
+
+if(isset($_SESSION['id']))
+{
+	$user=$_SESSION['id'];
+	$result=mysqli_query($connect,"SELECT * FROM user where user_id='$user'");
+}
+			
+?>
+
+<head>
+<title>52Hz | Product Detail</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="new_nav.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">//js for higlight selected value</script>
+
+<style>
+.logo{width:150px;}
+
+.login{margin-top:-70px;
+		margin-bottom:50px;}
+
+.cart{box-shadow:5px 5px black;
+		letter-spacing:1px;
+		font-style:italic;
+		padding:20px;}
+		
+.cart:hover{letter-spacing:3px;}
+
+
+.dropdown-content{border-radius:3px;}
+
+
+.cart:hover{margin-top:5px;
+			margin-left:6px;
+			}
+
+.nav{margin-left:170px;
+		margin-top:-130px;}
+		
+#displayimg{margin:50px;
+			margin-top:120px;}
+
+.container{margin-top:-520px;
+			margin-left:400px;
+			text-align:center;}
+			
+.pro_name{color:#2F4F4F;}
+
+.pro_des{font-size:23px;
+			color:grey;
+			padding:15px;
+			font-family: sans-serif;}
+
+.color{font-weight:bold;
+		padding:4px;
+		text-align:left;
+		margin-left:245px;
+		font-size:20px;
+		letter-spacing:4px;
+		text-shadow:1px 2px #8FBC8F;
+		margin-bottom:-10px;}
+
+		
+a{text-decoration:none;}
+
+.type-name{color:#663399;
+			font-weight:bold;
+			letter-spacing:1px;}
+			
+.type_container{padding:10px;
+				}
+				
+.type-name:hover{letter-spacing:3px;
+					font-weight:bold;
+					font-style:italic;}
+		
+/*code to change background color*/
+.navbar-nav>.active>a {
+			font-weight:bold;
+			font-style:italic;
+            color:#CD853F;
+			text-decoration:underline;
+			letter-spacing:5px;
+		}
+
+.navbar-nav{padding:10px;}
+
+.qty{font-weight:bold;
+		padding:10px;
+		padding-right:15px;
+		margin-left:100px;
+		font-size:20px;
+		letter-spacing:4px;
+		text-shadow:1px 2px #8FBC8F;
+		padding-right:100px;}
+
+input[type=number]{padding:10px;
+					border-radius:5px;
+					text-align:center;
+					font-size:18px;}
+
+.sub_btn{padding:20px;
+			margin-right:150px;
+			margin-left:40px;
+			margin-top:35px;
+			box-shadow:2px 2px black;
+			font-weight:bold;
+			background:#708090;
+			color:#E5E4E2;
+			font-size:15px;}
+
+.sub_btn:hover{background-color:#E5E4E2;
+				letter-spacing:3px;
+				font-weight:bold;
+				font-style:italic;
+				cursor:grabbing;
+				color:#728FCF;
+				position:relative;
+				top:10px;
+				left:10px;}
+
+/*rating*/
+
+.rating {
+  border: 2px solid #ccc;
+  background-color:transparent;
+  border-radius: 5px;
+  padding: 16px;
+  
+}
+
+.rating img {
+  float: left;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.rating span {
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.review_frm{background-color:#F2F2F2; 
+			float:left; 
+			padding:50px; 
+			margin-bottom:20px;
+			margin-left:80px;
+			margin-right:-20px;
+			margin-top:100px;}
+			
+.review_frm input {padding:5px;
+					text-align:center;
+					border-radius:3px;
+					width:100%;}
+					
+textarea{padding:5px;
+			border-radius:3px;
+			border:2px solid black;}
+					
+.cus_email{width:100%;}
+
+.review_btn{padding:10px;
+			letter-spacing:3px;
+			cursor:grabbing;}
+			
+.review_btn:hover{background-color:#F0FFFF;
+					font-weight:bold;
+					letter-spacing:5px;}
+					
+/* The Modal (background) */
+.modal {
+  display:none; /* Hidden by default */
+  padding-top: 150px; /* Location of the box */
+  
+  
+}
+
+/* Modal Content */
+.modal-content {
+  margin: auto;
+  padding: 20px;
+}
+
+#myBtn{padding:10px;
+		cursor:grabbing;
+		margin-left:850px;
+		border-radius:5px;
+		margin-bottom:30px;}
+		
+#myBtn:hover{background-color:#FFFCF7;
+				font-weight:bold;
+				letter-spacing:2px;
+				color:#79706B;}
+				
+#displaystock{border:none;
+				font-weight:bold;
+				font-size:15px;
+				color:grey;}
+</style>
+
+
+<script >
+
+<?php 
+	if(isset($_SESSION['id']))
+	{
+		$user=$_SESSION['id'];
+		$result=mysqli_query($connect,"SELECT * FROM user where user_id='$user'");
+						
+		$row=mysqli_fetch_assoc($result);
+						
+		$user_status=$row["user_name"];
+						
+	}
+	else
+	{
+		$user_status="LOGIN";
+						
+	}
+	
+	
+?>
+
+
+$(document).ready(function () {
+  
+            $('div.navbar-nav > div')
+                    .click(function (e) {
+                $('div.navbar-nav > div')
+                    .removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+		
+
+function gettype(type,no)
+{
+
+	document.getElementById("hiddentype").value = type;
+	
+	
+	var img_dir=document.getElementById("img_dir"+no).value;
+
+	document.getElementById("displayimg").src=img_dir;
+	
+	var stock=document.getElementById("stock"+no).value;
+	document.getElementById("displaystock").value=stock;
+	
+	var price=document.getElementById("price"+no).value;
+	document.getElementById("displayprice").value=price;
+
+	
+}
+
+
+</script>
+</head>
+<body>
+<!--header-->
+	<div class="header">
+	
+		<div class="logoPic">
+			<a href="index.php"><img src="logo.png" class="logo"></a>
+		</div>
+		
+		<div class="login">
+
+			<button class="cart" onclick="document.location='makeorder.php'"><i class="fa fa-cart-plus" aria-hidden="true"></i> CARTS</button>
+							
+			<div class="dropdown">
+			
+				<button class="dropbtn"><?php echo $user_status ;?><i class="fa fa-caret-down" style="margin-left:15px;"></i></button>
+							
+				<div class="dropdown-content">
+				
+					<a href="profile.php"><?php echo $user_status ;?></a>
+					<a href="show-wishlist.php"><i class="fa fa-heart" aria-hidden="true"></i> MY WISHLIST</a>
+					<a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>LOGOUT</a>
+					
+				 </div>
+			</div>
+		</div>
+		
+		<ul class="nav">
+			<li><a href="index.php">HOME</a></li> 
+			<li><a href="ABOUT_US.php">ABOUT US</a></li>
+			<li><a href="product_catogery.php?category=lipstick">LIPSTICK</a></li>
+			<li><a href="product_catogery.php?category=eyebrow">EYEBROW</a></li>
+			<li><a href="product_catogery.php?category=foundation">FOUNDATION</a></li>
+			<li><a href="product_catogery.php?category=eyeshadow">EYESHADOW</a></li>
+			<li><a href="CONTACT_US.php">CONTACT US</a></li> 
+		</ul>
+		
+	 
+	</div>
+<!--header end-->
+ 
+<?php
+
+if(isset($_GET['prod_id']))
+{
+	$prod_id=($_GET['prod_id']);
+	
+}
+	$result = mysqli_query($connect, "select * from product WHERE product_id='$prod_id'");	
+	$row = mysqli_fetch_assoc($result);
+				
+?>		
+		<img src="Admin/working_site/Product_img/<?php echo $row["img_dir"] ?>" onerror="this.onerror=null; this.src='Default.png'" alt="lipstick" id="displayimg" width="400">
+
+	<div class="container">
+
+		<h3 class="pro_name"><?php echo $row["product_name"] ?></h3>
+		
+		<div class="pro_des">
+		
+			<?php echo $row["product_description"] ?>
+		</div>
+		
+		<h2 style="margin-left:200px;">RM<input type="text" style="border: 0px;font-size:24px;"id="displayprice" value="<?php echo $row["product_price"] ?>" readonly></h2>
+		
+
+		<form method="post">
+
+			<p class="color">COLOR:</p>
+		  
+			<div class="navbar-nav" >
+
+			<?php 
+				$no=0;
+				$type = mysqli_query($connect, "select * from product_type WHERE product_id='$prod_id' AND product_isDelete=0");	
+				while($type_row = mysqli_fetch_assoc($type))
+				{ 
+					$no++;
+			?>
+
+					<div class="type_container">
+
+						<a class="type-name" href="#" onclick="gettype(<?php echo $type_row['product_type_id']?>,<?php echo $no?>)">
+							<p style="text-align:left; margin-left:450px;"><?php echo $type_row["product_type_name"]?></p>
+						
+
+						<input type="hidden" id="img_dir<?php echo $no?>" value="Admin/working_site/Product_img/<?php echo $type_row["img_dir"]?>">
+									
+						
+						<input type="hidden" name="stock" id="stock<?php echo $no?>" value="<?php echo $type_row["product_stock"]?>"/>
+						
+						<input type="hidden" name="price" id="price<?php echo $no?>" value="<?php echo $type_row["product_type_price"]?>"/>
+						</a>
+					</div>
+					
+					
+			<?php }?>
+
+			  </div>
+			  <input type="hidden" name="hiddentype" id="hiddentype" />
+			  <input type="hidden" name="type_no" id="type_no" value="<?php echo $no?>"/>
+			  <span class="qty">Quantity</span>
+			 
+			<input type="number" name="cust_qty" min="1" autocomplete="off" value="1" required>
+						
+			<span style="margin-left:15px; font-style:italic; color:grey;"> Stock: </span><input type="text" id="displaystock" value="" readonly> 
+			
+			<br>
+			<input type="submit" class="sub_btn" name="addbtn" value="ADD TO CART">
+
+			<input type="submit" class="sub_btn" name="buy" value="BUY NOW">
+			
+					
+		
+		<button type="submit" class="sub_btn" name="wish">
+				<i class="fa fa-heart" aria-hidden="true"></i>  
+				ADD TO WISHLIST
+			</button>
+		</form>
+
+		
+	</div>
+	
+	
+	
+	
+<?php
+if (isset($_POST['addbtn'])&&!isset($_SESSION['id'])) 
+{
+	?>
+		<script>
+		alert("Please login first.");
+		</script>
+		
+		<?php
+}
+
+
+if (isset($_POST['addbtn'])&&isset($_SESSION['id'])) 	
+{
+	$cqty = $_POST["cust_qty"]; 
+	$type_id=$_POST["hiddentype"]; 
+	$t_row=mysqli_fetch_assoc(mysqli_query($connect, "select * from product_type where product_type_id='$type_id'"));//get type row
+	$typename=$t_row['product_type_name'];//get type name
+	$type=$t_row['product_type_id'];//get type id
+	$pprice = $row["product_price"];  
+	$balance = $t_row["product_stock"] - $cqty;  
+	$pdes=$row["product_description"];
+	$pname=$row["product_name"];
+	$pprice=$row["product_price"];
+	
+	
+	if($balance>=0&&$type!=null)
+	{
+		
+		
+		$result = mysqli_query($connect,"SELECT * from shopping_cart where user_id='$user' and product_type_id='$type'");
+		$row=mysqli_fetch_assoc($result);
+		if(mysqli_num_rows($result) > 0)// if the row exists
+		{
+			$newqty=$row['product_qty']+$cqty;
+			
+			mysqli_query($connect,"UPDATE shopping_cart SET product_qty='$newqty' where product_id='$prod_id' and product_type_id='$type'");
+			
+
+			mysqli_query($connect,"UPDATE product SET product_stock='$balance' where product_id='$prod_id' and product_type_id='$type'");
+			
+			
+				?>
+				
+				<?php
+		}
+		else
+		{
+			mysqli_query($connect, "INSERT INTO shopping_cart (product_id,product_name,product_price,product_qty,user_name,user_id,product_des,product_type_id,product_type_name) values 
+														('$prod_id','$pname','$pprice','$cqty','$user_status','$user' ,'$pdes','$type','$typename')");
+			
+			mysqli_query($connect,"UPDATE product SET product_stock='$balance' where product_id='$prod_id' and product_type_id='$type");
+		}
+		
+		?>
+		<script>
+				alert("Add Cart Successful!");
+				</script>
+		<?php
+	}
+	else if($type==null)
+	{
+		
+		?>
+		<script>
+		//alert("Please select a type!");
+		</script>
+		<?php
+	}
+	else
+	{
+		
+		?>
+		<script>
+		alert("Your quantity is more than the stock that we have. Please change.");
+		</script>
+		<?php
+	}
+	
+}
+
+if (isset($_POST['addbtn'])) 	
+{
+	$cqty = $_POST["cust_qty"]; 
+	$type_id=$_POST["hiddentype"];
+	
+	if(empty($type_id))
+	{
+		?>
+		<script>
+		alert("Please select a type of product")
+		window.location.href = "product_detail.php?prod_id=<?php echo $prod_id?>";
+		</script>
+		<?php
+	}
+	
+}
+
+if(isset($_POST['buy']))
+{
+	
+
+	$cqty = $_POST["cust_qty"]; 
+	$type_id=$_POST["hiddentype"];
+	
+	if(empty($type_id))
+	{
+		?>
+		<script>
+		alert("Please select a type of product")
+		window.location.href = "product_detail.php?prod_id=<?php echo $prod_id?>";
+		</script>
+		<?php
+	}
+
+	
+	?>
+	<script>
+	window.location.href = "buynow.php?selected&procode=<?php echo $type_id?>&qty=<?php echo $cqty?>";
+	</script>
+	<?php
+}
+
+?>
+<?php
+if(isset($_POST['wish']))
+{
+	$result = mysqli_query($connect,"SELECT * from wishlist where pid='$prod_id' and uid='$user'");
+	
+	if(mysqli_num_rows($result)==0)
+	{
+		mysqli_query($connect,"INSERT INTO wishlist(pid,uid) VALUES('$prod_id','$user')");
+		?>
+			<script>
+					alert("Successful added wishlist");	
+			</script>
+		<?php
+	}
+	else
+	{
+		?>
+		<script>
+			alert("Your product has been in the wishlist.");
+		</script>
+		<?php
+		
+	}
+}
+
+?>
+<h1 align="center" style="margin-top:70px; margin-bottom:20px;">Customer Review</h1>
+
+
+<?php
+		$result = mysqli_query($connect,"SELECT * from customer_review where product_id='$prod_id' order by time desc");
+		while($product = mysqli_fetch_assoc($result))
+		{ 
+					
+				
+			if(mysqli_num_rows($result)> 0 )
+			{
+				
+				?>
+				<table width="80%" style=" margin-left:180px; display:inline;">
+					<tr>
+						<th>
+							<div class="rating" style="text-align:left;">
+							  <img src="user.jpg" alt="User" style="width:100px; margin:20px; margin-right:100px;">
+							  
+							  <span style="margin-left:700px; color:grey; font-size:15px;"><?php echo $product["time"] ?></span>
+							  <p style="font-weight:bold; letter-spacing:2px; font-size:20px; color:blue; font-style:italic;"><?php echo $product["customer_name"] ?></p>
+							  <p style="color:grey; font-style:italic;">COLOR : <?php echo $product["product_type_name"] ?></p>
+							  <p style="font-size:18px;"><?php echo $product["review"] ?></p>
+							  
+							</div>
+						</th>	
+					</tr>
+				</table>
+				<?php 
+				
+			}
+			
+			
+
+		}
+		if(mysqli_num_rows($result) < 1)
+			{
+				?>
+				<table width="80%" style=" margin-top:50px; margin-left:180px;">
+					<tr>
+						<th>
+							<div class="rating" style="text-align:left;">
+							  <p style="text-align:center">No Review Yet</p>
+							  
+							</div>
+						</th>	
+					</tr>
+				</table>
+				<?php
+			}
+		
+		?>
+</body>
+
+</html>
