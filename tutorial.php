@@ -1,0 +1,200 @@
+<?php 
+include("dataconnection.php");
+session_start();
+?>
+
+<html>
+
+
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>52Hz | Tutorial Video</title>
+<style>
+
+body{background:linear-gradient(45deg, #EBF4FA, #F5FFFA);}
+
+.logo{width:120px;}
+
+.nav{margin-top:-60px;
+	margin-left:150px;}
+
+.nav a{text-decoration:none;
+		padding:20px;
+		font-size:20px;
+		color:#0C3252;
+		font-weight:bold;}	
+
+.nav a:hover{text-decoration:overline;
+			letter-spacing:3px;
+			font-weight:bold;
+			color:#5392C8;}
+		
+.cart{background-color: #lightgrey;
+  color: brown;
+  padding: 20px;
+  border: none;
+  cursor: grabbing;
+    border-radius:10px;
+	font-size:16px;
+	letter-spacing:2px;
+	box-shadow:4px 4px #36454F;}
+
+.cart:hover{background-color:#BCC6CC;
+			font-weight:bold;
+			letter-spacing:3px;
+			box-shadow:2px 2px #36454F;
+			top:5px;
+			left:5px;}
+
+.dropbtn {
+  background-color: #lightgrey;
+  color: brown;
+  padding: 20px;
+  border: none;
+  cursor: grabbing;
+    border-radius:10px;
+	font-size:16px;
+	letter-spacing:2px;
+	box-shadow:4px 4px #36454F;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left:-30px;}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size:15px;
+  letter-spacing:2px;
+  font-weight:bold;
+  font-style:italic;}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #BCC6CC;
+							font-weight:bold;
+							letter-spacing:4px;
+							box-shadow:2px 2px #36454F;}
+
+.login{	float:right;
+		margin-top:-20px;}
+
+ul li{list-style-type:none;
+	padding:20px;
+	width:100px;
+	margin-left:40px;
+	letter-spacing:2px;}
+
+ul li a:hover{letter-spacing:3px;
+				cursor:grabbing;
+				font-weight:bold;
+				color:#5392C8;}
+</style>
+
+<script>
+<?php 
+	if(isset($_SESSION['id']))
+	{
+		$user=$_SESSION['id'];
+		$result=mysqli_query($connect,"SELECT * FROM user where user_id='$user'");
+						
+		$row=mysqli_fetch_assoc($result);
+						
+		$user_status=$row["user_name"];
+						
+	}
+	else
+	{
+		$user_status="LOGIN";
+						
+	}
+?>
+
+
+</script>
+</head>
+<body>
+
+<?php
+
+
+if(!isset($_SESSION['id']))
+{
+	?>
+	<script>
+		alert("please log in!");
+		window.location.href="login.php";
+	</script>
+	<?php
+	
+	exit();
+}
+?>
+<div class="logoPic">
+			<a href="index.php"><img src="logo.png" alt="logo" class="logo"></a>
+		</div>
+		
+<div style="background:linear-gradient(90deg, #F5F8FF, #F5FFFA); color:white; height:100px; margin-top:-8px; width:101%; margin-left:-7px;">
+	
+	<div class="nav">
+				<a href="index.php">HOME</a>
+				<a href="ABOUT_US.php">ABOUT US</a>
+				<a href="product_catogery.php?category=lipstick">LIPSTICK</a>
+				<a href="product_catogery.php?category=eyebrow">EYEBROW</a>
+				<a href="product_catogery.php?category=foundation">FOUNDATION</a>
+				<a href="product_catogery.php?category=eyeshadow">EYESHADOW</a>
+				<a href="CONTACT_US.php">CONTACT US</a> 
+
+
+			<div class="login">
+
+				<button class="cart" style="margin-right:40px;" onclick="document.location='makeorder.php'"><i class="fa fa-cart-plus" style="margin-right:5px;"></i> CARTS</button>
+										
+					<div class="dropdown" style="margin-right:65px;">
+						<button class="dropbtn"><?php echo $user_status ;?><i class="fa fa-caret-down" style="margin-left:5px;"></i></button>
+										
+							<div class="dropdown-content">
+									
+								<a href="profile.php"><?php echo $user_status ;?></a>
+								<a href="show-wishlist.php"><i class="fa fa-heart" aria-hidden="true"></i>MY WISHLIST</a>
+								<a href="logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i>LOGOUT</a>
+								
+							  </div>
+						</div>
+			</div>
+			
+	</div>
+	<h1 style="color:#616D7E; margin:30px; margin-bottom:-20px; font-style:italic; text-shadow:1px 2px #7D7160">MAKE UP TUTORIAL VIDEO FOR MALE AND GIRLS</h1>
+<div style="text-align:center; background:white; width:1100px; margin:100px 220px;">	
+	<h3 style="color:black;">TUTORIAL VIDEO FOR MALE</h3>
+	<iframe width="1020" height="445" src="https://www.youtube.com/embed/G9I5vGva-Jk" alt="Tutorial Video For Male">
+	</iframe>
+</div>
+
+<div style="text-align:center; background:white; width:1100px; margin:100px 220px; ">	
+	<h3 style="color:black;">TUTORIAL VIDEO FOR GIRLS & WOMEN</h3>
+	<iframe width="1020" height="445" src="https://www.youtube.com/embed/aZgsVALlCrk" alt="Tutorial Video For Male">
+	</iframe>
+</div>
+
+<div style="text-align:center; background:white; width:1100px; margin:100px 220px; ">	
+	<h3 style="color:black;">MAKE UP TUTORIAL WITH DIOR LIPSTICK</h3>
+	<iframe width="1020" height="445" src="https://www.youtube.com/embed/dKA0-qc8yIg" alt="Tutorial Video For Male">
+	</iframe>
+</div>
+					
+</body>
